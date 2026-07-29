@@ -1,0 +1,209 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "020e8014757670cc297c",
+  "position": {
+    "x": 16.054732041049029,
+    "y": 360.50171037628274,
+    "z": 6000,
+    "height": 348.82554161915618,
+    "width": 500.61573546180159,
+    "tabOrder": 6000
+  },
+  "visual": {
+    "visualType": "scatterChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "hospital_patient_treatment_dataset"
+                    }
+                  },
+                  "Property": "Treatment Type"
+                }
+              },
+              "queryRef": "hospital_patient_treatment_dataset.Treatment Type",
+              "nativeQueryRef": "Treatment Type",
+              "active": true
+            }
+          ]
+        },
+        "Series": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "hospital_patient_treatment_dataset"
+                    }
+                  },
+                  "Property": "Treatment Type"
+                }
+              },
+              "queryRef": "hospital_patient_treatment_dataset.Treatment Type",
+              "nativeQueryRef": "Treatment Type"
+            }
+          ]
+        },
+        "Size": {
+          "projections": [
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "hospital_patient_treatment_dataset"
+                        }
+                      },
+                      "Property": "Treatment Cost"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(hospital_patient_treatment_dataset.Treatment Cost)",
+              "nativeQueryRef": "Treatment Cost",
+              "displayName": "Treatment Cost"
+            }
+          ]
+        },
+        "X": {
+          "projections": [
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "hospital_patient_treatment_dataset"
+                        }
+                      },
+                      "Property": "Treatment Cost"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(hospital_patient_treatment_dataset.Treatment Cost)",
+              "nativeQueryRef": "Treatment Cost",
+              "active": true,
+              "displayName": "Treatment Cost"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "hospital_patient_treatment_dataset"
+                        }
+                      },
+                      "Property": "Hospital Stay (Days)"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(hospital_patient_treatment_dataset.Hospital Stay (Days))",
+              "nativeQueryRef": "Sum of Hospital Stay (Days)"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Aggregation": {
+                "Expression": {
+                  "Column": {
+                    "Expression": {
+                      "SourceRef": {
+                        "Entity": "hospital_patient_treatment_dataset"
+                      }
+                    },
+                    "Property": "Treatment Cost"
+                  }
+                },
+                "Function": 0
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "objects": {
+      "trend": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "displayName": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Trend line 1'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Correlation between hospital stay and treatment cost'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "radius": {
+              "expr": {
+                "Literal": {
+                  "Value": "10D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

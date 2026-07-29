@@ -1,0 +1,145 @@
+table hospital_patient_treatment_dataset
+	lineageTag: 1b639dae-b209-4a70-857a-3d0267a6d715
+
+	measure selected_department = "Gender Composition by Department" & "("&SELECTEDVALUE(hospital_patient_treatment_dataset[Department])&")"
+		lineageTag: c7813774-ad94-47d0-b912-b5d7d953e753
+
+	measure Highest_Recovery_Treatment = ```
+			
+			VAR MaxScore =
+			    MAXX (
+			        ALL ( hospital_patient_treatment_dataset ),
+			        hospital_patient_treatment_dataset[Recovery Score]
+			    )
+			VAR TopTreatment =
+			    TOPN (
+			        1,
+			        FILTER (
+			            ALL ( hospital_patient_treatment_dataset ),
+			            hospital_patient_treatment_dataset[Recovery Score] = MaxScore
+			        ),
+			        hospital_patient_treatment_dataset[Treatment Type],
+			        ASC
+			    )
+			VAR TreatmentName =
+			    MAXX ( TopTreatment, hospital_patient_treatment_dataset[Treatment Type] )
+			RETURN
+			MaxScore & UNICHAR(10) & "(" & TreatmentName  & ")"
+			
+			```
+		lineageTag: ff07c284-811a-46ec-b633-91c1c6573133
+
+	measure Lowest_Recovery_Treatment = ```
+			
+			VAR MinScore =
+			    MINX (
+			        ALL ( hospital_patient_treatment_dataset ),
+			        hospital_patient_treatment_dataset[Recovery Score]
+			    )
+			VAR BottomTreatment =
+			    TOPN (
+			        1,
+			        FILTER (
+			            ALL ( hospital_patient_treatment_dataset ),
+			            hospital_patient_treatment_dataset[Recovery Score] = MinScore
+			        ),
+			        hospital_patient_treatment_dataset[Treatment Type],
+			        ASC
+			    )
+			VAR TreatmentName =
+			    MAXX ( BottomTreatment, hospital_patient_treatment_dataset[Treatment Type] )
+			RETURN
+			MinScore & UNICHAR(10) & "(" & TreatmentName  & ")" 
+			
+			```
+		lineageTag: 3a360a28-685b-4f39-90ef-a05218edaa5f
+
+	column 'Patient ID'
+		dataType: string
+		lineageTag: 41bf34cc-2f8c-4460-b10e-fc70dc0abe00
+		summarizeBy: none
+		sourceColumn: Patient ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Department
+		dataType: string
+		lineageTag: d1ab17d8-10be-493f-8697-c9dda4b753e7
+		summarizeBy: none
+		sourceColumn: Department
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Treatment Type'
+		dataType: string
+		lineageTag: 1b0a4ed0-2a4f-4d62-948a-f20d91bcc3e3
+		summarizeBy: none
+		sourceColumn: Treatment Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Doctor Name'
+		dataType: string
+		lineageTag: bd816c68-4c30-4d5b-9949-47a0efd0309b
+		summarizeBy: none
+		sourceColumn: Doctor Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Gender
+		dataType: string
+		lineageTag: 663c8c98-9e66-4523-93c4-42623c685a21
+		summarizeBy: none
+		sourceColumn: Gender
+
+		annotation SummarizationSetBy = Automatic
+
+	column Age
+		dataType: int64
+		formatString: 0
+		lineageTag: 7f76a4f5-1399-4853-9848-53356da16afa
+		summarizeBy: sum
+		sourceColumn: Age
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Treatment Cost'
+		dataType: double
+		lineageTag: a6c45a01-e4f3-4aed-b09f-6d0cdb237715
+		summarizeBy: sum
+		sourceColumn: Treatment Cost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Hospital Stay (Days)'
+		dataType: int64
+		formatString: 0
+		lineageTag: 88a099bb-fe14-463e-9e8d-c32b96701eb2
+		summarizeBy: sum
+		sourceColumn: Hospital Stay (Days)
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Recovery Score'
+		dataType: int64
+		formatString: 0
+		lineageTag: 1d7b2ee5-4cc6-468a-b5d9-402545829f03
+		summarizeBy: sum
+		sourceColumn: Recovery Score
+
+		annotation SummarizationSetBy = Automatic
+
+	partition hospital_patient_treatment_dataset = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\ionly\Downloads\Hospital Patient Treatment Dataset\hospital_patient_treatment_dataset.csv"),[Delimiter=",", Columns=9, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Patient ID", type text}, {"Department", type text}, {"Treatment Type", type text}, {"Doctor Name", type text}, {"Gender", type text}, {"Age", Int64.Type}, {"Treatment Cost", type number}, {"Hospital Stay (Days)", Int64.Type}, {"Recovery Score", Int64.Type}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+
